@@ -1,4 +1,6 @@
 function f = binaryConverter(num)
+%   binaryConverter  converts a binary number to a number in base 10
+
     max_precision=16;
     [x, y] = num2arrays(num, max_precision);
     sum1 = afterdeci(x);

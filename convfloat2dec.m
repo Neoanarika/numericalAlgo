@@ -1,5 +1,8 @@
-
 function f = convfloat2dec(numStr)
+%   convfloat2dec  converts a string repersentation of a single floating
+%   point precision number to a base 10 number
+%
+%   See also binaryConverter.
     sign = (-1)^numStr(1);
     exponent= numStr(2:9);
     disp(numStr(10:end));
