@@ -11,7 +11,7 @@ def formated_array_print(arr):
     print(arr[m], end='')
     print(']', end='\n\n')
 
-def guassianElimination(arr, verbose=False, steps=False, backwardSub=False):
+def guassianElimination(arr, rat=True, verbose=False, steps=False, backwardSub=False):
     """
     guassianElimination takes a python list and performs guassian elimination
 
@@ -31,16 +31,28 @@ def guassianElimination(arr, verbose=False, steps=False, backwardSub=False):
     N = len(arr)
     M = len(arr[0])
 
+    r = [i for i in range(N)]
+
     formated_array_print(arr)
     for k in range(N-1):
+        if arr[k][k] == 0:
+            for i in range(k+1, N):
+                if arr[i][k] > 0:
+                    r[k], r[i] = r[i], r[k]
+                    break 
+            else:
+                raise Exception("Error: the matrix is singular")
+
         # Elimination of subsequent row
         for i in range(k+1, N):
-            m = Rational(arr[i][k],arr[k][k])
+            m = Rational(arr[r[i]][k],arr[r[k]][k]) if rat else arr[r[i]][k]/arr[r[k]][k]
             if steps: print(f'({i+1}) <- ({i+1}) - {m} x ({k+1})')
             for j in range(k+1, M):
-                arr[i][j] = arr[i][j] - m*arr[k][j]
+                arr[r[i]][j] = arr[r[i]][j] - m*arr[r[k]][j]
         if verbose: formated_array_print(arr)
     if not verbose: formated_array_print(arr)
+    
+    if arr[r[N-1]][M-1] == 0: raise Exception("Error: the matrix is singular")
 
     if backwardSub:
         x = [0]*N
@@ -54,18 +66,44 @@ def guassianElimination(arr, verbose=False, steps=False, backwardSub=False):
 
 if __name__ == "__main__":
     # Test array 
+    # x = [-1, 2, 0, 1]
     arr1 = [[1, 1, 0, 1, 2],
             [2, 1, -1, 1, 1], 
             [3, -1, -1, 2, -3],
             [-1, 2, 3, -1, 4]]
 
+    # x = [-1, 3, 3, 3, 3]
     arr2 = [[1, 1, -1, 1, -1, -1],
             [3, 1, -3, -2, 3, -6], 
             [2, 2, 1, -1, 1, 7],
             [4, 1, -1, 4, -5, -7],
             [16, -1, 1, 9, -1, 8]]
+    
+    # x = [3, 2, -2]
+    arr3 = [[2, -3, 2, -4],
+            [-4, 2, -6, 4], 
+            [2, 2, 1, 8]]
 
-    guassianElimination(arr1,
+    # x = [1, 0, 2, -1]
+    arr4 = [[1, 3, 5, 7, 4],
+            [3, 6, 2, 4, 3], 
+            [-2, 3, 1, -1, 1],
+            [2, 5, 5, 0, 12]]
+
+    # Testing for singularities
+    arr5 = [[1, 2, 3, 4],
+            [1, 2, 3, 4], 
+            [-3, 2, 0, 1],
+            [0, 5, 10, 6]]
+    
+    arr6 = [[0, 1, 3, 4, 6],
+            [2, 2, 3, 5, 7], 
+            [4, 2, 0, 3, 8],
+            [8, 3, 2, 3, 9],
+            [16, 5, 1, 3, 18]]
+
+    guassianElimination(arr3,
+                        rat = True,
                         verbose = True,
                         steps = True,
-                        backwardSub=True) 
+                        backwardSub=False) 

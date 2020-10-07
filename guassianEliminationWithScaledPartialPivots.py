@@ -33,20 +33,25 @@ def guassianElimination(arr, rat=True, verbose=False, steps=False, backwardSub=F
     # row labels
     r = [i for i in range(N)]
 
+    s = [max(map(abs,row[:-1])) if backwardSub else max(map(abs,row)) for row in arr]
+    if not min(s): raise Exception("Error: matrix is singular")
+
     formated_array_print(arr)
     for k in range(N-1):
         # Elimination of subsequent row
         
         largest = k
-        le = abs(arr[0][0])
+        le = abs(arr[largest][largest])/s[largest]
         for i in range(largest, N):
-            val = abs(arr[i][k])
+            val = abs(arr[i][k])/s[i]
+            #print(le, val)
             if le < val:
                 le = val
                 largest = i 
         if steps and k != largest: print(f'({k+1}) <-> ({largest+1})')
+        if le == 0: raise Exception("Error: matrix is singular")
         r[k], r[largest] = r[largest], r[k]
-
+        
         for i in range(k+1, N):
             m = Rational(arr[r[i]][k],arr[r[k]][k]) if rat else arr[r[i]][k]/arr[r[k]][k]
             if steps: print(f'({i+1}) <- ({i+1}) - {m} x ({k+1})')
@@ -105,8 +110,8 @@ if __name__ == "__main__":
             [8, 3, 2, 3, 9],
             [16, 5, 1, 3, 18]]
 
-    guassianElimination(arr1,
+    guassianElimination(arr4,
                         rat = True,
                         verbose = True,
-                        steps = True,
-                        backwardSub=False) 
+                        steps = False,
+                        backwardSub=True) 
