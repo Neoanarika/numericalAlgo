@@ -1,4 +1,4 @@
-# numericalAlgo
+# Numerical Algorithms for MA2213
 
 Algorithm collection for MA2213
 
