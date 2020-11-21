@@ -11,10 +11,9 @@ function bas_val = LagBasisChebshev(n , x)
 end
 
 function points = ChebshevPoints(n)
-   points = 0:n;
+   points = 0:10;
    for i = points
-        points(i+1) = chebshev(i, n);
-        fprintf('%d\n', points(i+1));
+        points(i+1) = chebshev(i,10);
    end
 end
 
