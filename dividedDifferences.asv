@@ -1,0 +1,37 @@
+% In order to update matlab classes by reference we need to specify the
+% class as a handle class. 
+classdef dividedDifferences< handle
+   properties
+      x
+      b
+   end
+   methods
+       function computeDividedDifferences(obj, x, fx)
+            s = size(x, 2);
+            obj.x = x;
+            obj.b = 1:s;
+
+            for k = 1:s
+                obj.b(k) = fx(k);
+            end
+            for j = 1:s
+                for k = s:-1:j+1
+                    obj.b(k) = (obj.b(k)-obj.b(k-1))/(obj.x(k)-obj.x(k-j));
+                    %disp(obj.b(k));
+                end
+            end
+       end
+       function p = homer(obj, x)
+        n = size(obj.b, 2);
+        p = obj.b(n)*x;
+        for i = n-1:1
+            p = obj.b(i) + x*p;
+        end
+       end 
+       function testcase(obj, x, fx)
+           obj.computeDividedDifferences(x,fx);
+           for k = 1
+           assert(obj.homer(x(k)))
+       end
+    end
+end

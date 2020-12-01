@@ -1,0 +1,15 @@
+function DividedDifferencesTable(x, fx)
+    s = size(x, 2);
+    table = sym(zeros(s,s));
+    
+    for k = 1:s
+        table(k, 1) = fx(k);
+    end
+    
+    for j = 1:s-1
+        for k = s:-1:j+1
+            table(j+1, k) = (table(j, k)-table(j, k-1))/(x(k)-x(k-j));
+            %disp(obj.b(k));
+        end
+    end
+end
